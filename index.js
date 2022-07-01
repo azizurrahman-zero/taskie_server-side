@@ -22,7 +22,14 @@ async function run() {
     const tasksCollection = database.collection("tasks");
 
     app.get("/tasks", async (req, res) => {
-      const query = {};
+      const query = { checked: false };
+      const cursor = tasksCollection.find(query);
+      const tasks = await cursor.toArray();
+      res.send(tasks);
+    });
+
+    app.get("/completed-tasks", async (req, res) => {
+      const query = { checked: true };
       const cursor = tasksCollection.find(query);
       const tasks = await cursor.toArray();
       res.send(tasks);
